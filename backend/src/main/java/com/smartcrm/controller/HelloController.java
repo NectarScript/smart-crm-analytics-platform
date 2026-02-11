@@ -1,15 +1,27 @@
 package com.smartcrm.backend.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.smartcrm.backend.model.CustomerEntity;
+import com.smartcrm.backend.repository.CustomerRepository;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/customers")
 public class HelloController {
 
-    @GetMapping("/test")
-    public String test() {
-        return "Backend running";
+    private final CustomerRepository repository;
+
+    public HelloController(CustomerRepository repository) {
+        this.repository = repository;
+    }
+
+    @PostMapping
+    public CustomerEntity createCustomer(
+            @RequestBody CustomerEntity customer) {
+        return repository.save(customer);
+    }
+
+    @GetMapping
+    public java.util.List<CustomerEntity> getAllCustomers() {
+        return repository.findAll();
     }
 }
