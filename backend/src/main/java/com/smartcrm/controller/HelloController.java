@@ -1,27 +1,35 @@
 package com.smartcrm.backend.controller;
 
 import com.smartcrm.backend.model.CustomerEntity;
-import com.smartcrm.backend.repository.CustomerRepository;
+import com.smartcrm.backend.service.CustomerService;
+import jakarta.validation.Valid;
+
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
 public class HelloController {
 
-    private final CustomerRepository repository;
+    private final CustomerService service;
 
-    public HelloController(CustomerRepository repository) {
-        this.repository = repository;
+    public HelloController(CustomerService service) {
+        this.service = service;
     }
 
-    @PostMapping
-    public CustomerEntity createCustomer(
-            @RequestBody CustomerEntity customer) {
-        return repository.save(customer);
-    }
+   @PostMapping
+public CustomerEntity createCustomer(
+        @Valid @RequestBody CustomerEntity customer) {
+    return service.saveCustomer(customer);
+}
+
 
     @GetMapping
-    public java.util.List<CustomerEntity> getAllCustomers() {
-        return repository.findAll();
+    public List<CustomerEntity> getAllCustomers() {
+        return service.getAllCustomers();
     }
 }
